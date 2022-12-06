@@ -6,16 +6,34 @@ const input = './day_5/input';
 async function main() {
     const data = await fs.readFile(input, 'utf-8');
     const answerOne = answerPart1(data);
+    const answerTwo = answerPart2(data);
 
     console.log(answerOne);
+    console.log(answerTwo);
 }
 
+function answerPart2(data) {
+    const storage = parseStorage(data.split("\n\n")[0]);
+    const movements = parseMovements(data.split("\n\n")[1]);
+
+    movements.map(movement => {
+        let tempArray = []
+        for(let i=0; i<movement.numberOfBoxes; i++){
+            tempArray.push(storage[movement.fromColumn].pop());
+
+        }
+        tempArray = _.chain(tempArray).reverse().value()
+        storage[movement.toColumn].push(...tempArray)
+
+    })
+
+    return _.map(storage, (row) => _.last(row)).filter(v => v !== undefined);
+}
 function answerPart1(data) {
     const storage = parseStorage(data.split("\n\n")[0]);
     const movements = parseMovements(data.split("\n\n")[1]);
 
     movements.map(movement => {
-        console.log(movement)
         for(let i=0; i<movement.numberOfBoxes; i++){
                 storage[movement.toColumn].push(storage[movement.fromColumn].pop());
         }
