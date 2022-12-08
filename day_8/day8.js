@@ -1,6 +1,6 @@
 import {promises as fs} from 'fs';
 
-const input = await fs.readFile('./day_8/test_input', 'utf-8');
+const input = await fs.readFile('./day_8/input', 'utf-8');
 const treeMap = parseMatrix(input);
 
 async function main() {
@@ -27,11 +27,31 @@ function treeIsVisible(col, row){
     if(col === 0 || col === treeMap[row].length-1 || row===0 || row === treeMap.length){
         return true;
     }
-
+    const currentTreeHeight = treeMap[row][col];
     // check row
-    for()
+    const currentRow = treeMap[row];
+    const leftRowIsCovered = currentRow.slice(0, col).some(c => c >= currentTreeHeight);
+    const rightRowIsCovered = currentRow.slice(col+1).some(c => c >= currentTreeHeight);
+    const isVisibleFromSides = !leftRowIsCovered || !rightRowIsCovered;
 
     //check col
+    let topIsCovered = false;
+    let botIsCovered = false;
+    for(let r = 0; r<treeMap.length; r++){
+        if(r < row){
+            if(treeMap[r][col] >= currentTreeHeight){
+                topIsCovered = true;
+            }
+        }
+        if(r > row){
+            if(treeMap[r][col]>=currentTreeHeight){
+                botIsCovered = true;
+            }
+        }
+    }
+    const isVisibleIFärdriktning = !topIsCovered || !botIsCovered;
+    const isVisible =isVisibleIFärdriktning || isVisibleFromSides;
+    return isVisible;
 
 }
 
