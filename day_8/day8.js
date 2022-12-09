@@ -1,6 +1,6 @@
 import {promises as fs} from 'fs';
 
-const input = await fs.readFile('./day_8/test_input', 'utf-8');
+const input = await fs.readFile('./day_8/input', 'utf-8');
 const treeMap = parseMatrix(input);
 
 async function main() {
@@ -45,11 +45,10 @@ function calculateSteps(direction, currentTree) {
 
     for (const [index, tree] of direction.entries()) {
         ++sightSteps;
-        if (tree >= currentTree && index > 0) {
+        if (tree >= currentTree) {
             break;
         }
     }
-    console.log("currentTree: ",currentTree, "steps: ", sightSteps,"direction: ", direction)
     return sightSteps
 }
 
